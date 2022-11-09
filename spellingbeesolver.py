@@ -1,3 +1,7 @@
+allowed_letters = 'oaflmru'  # put the letters for the day in here
+                             # first letter of the string is the yellow center letter of the hexagon on the NYT website/app
+                             # in this case, that would be the letter 'o'
+
 str_to_chars = lambda str: [char for char in str] # for ease of entering allowed letters
 
 with open('words_alpha.txt', 'r') as f:   # name of your words file
@@ -6,7 +10,7 @@ with open('words_alpha.txt', 'r') as f:   # name of your words file
 for i in range(len(lines)):
     lines[i] = lines[i].replace('\n', '')
 
-allowed_letters = str_to_chars('oaflmru') # first letter of the string is the center letter of the hexagon on the NYT website/app
+allowed_letters = str_to_chars(allowed_letters)
 good_words = []
 
 for i in range(len(lines)):
