@@ -1,3 +1,5 @@
+'''Solve the NYT Spelling Bee'''
+
 allowed_letters = 'oaflmru'  # put the letters for the day in here
                              # first letter of the string is the yellow center letter of the hexagon on the NYT website/app
                              # in this case, that would be the letter 'o'
