@@ -1,26 +1,46 @@
-"""Use to solve the New York Times Spelling Bee game"""
+"""Solve the New York Times' Spelling Bee game without using their word list"""
 
-ALLOWED_LETTERS = 'bpnaeil'  # put the letters for the day in here
-                             # first letter of the string is the yellow center
-                             # letter of the hexagon on the NYT website/app
-                             # in this case, that would be the letter 'o'
+import requests
+from bs4 import BeautifulSoup
 
-with open('data/common_words.txt', 'r', encoding='utf-8') as f:   # name of your words file
-    lines = [i.replace('\n', '') for i in f.readlines()]
-
-ALLOWED_LETTERS = list(ALLOWED_LETTERS)
+AUTOMATICALLY_GET_LETTERS = True # set to "True" if you would like the letters
+                                 # to be downloaded automatically
 good_words = []
 
-for i, line in enumerate(lines):
-    NUM_ALLOWED_LETTERS = 0
-    for j, char in enumerate(line):
-        if char in ALLOWED_LETTERS:
-            NUM_ALLOWED_LETTERS += 1
-    if NUM_ALLOWED_LETTERS == len(line) and len(line) >= 4 and ALLOWED_LETTERS[0] in line:
-        good_words.append(line)
+# download list of words
+try:
+    response = requests.get("http://www.mieliestronk.com/corncob_lowercase.txt")
+    if response.status_code == 200:
+        lines = response.text.split('\r\n')
+except Exception as exc:
+    raise ConnectionError("Could not get HTTP request for words") from exc
 
-print(f'\nFound {len(good_words)} matches out of {len(lines)} words\n')
+# download the allowed letters
+if AUTOMATICALLY_GET_LETTERS:
+    try:
+        page = requests.get("https://www.nytimes.com/puzzles/spelling-bee")
+        if page.status_code == 200:
+            soup = BeautifulSoup(page.content, 'html.parser')
+            TXT = str(soup.find(id="js-hook-pz-moment__game"))
+            LETTERS = TXT[TXT.index('validLetters\":'):TXT.index('pangrams')]
+            ALLOWED_LETTERS = LETTERS[LETTERS.index('[')+1:LETTERS.index(']')]
+            ALLOWED_LETTERS = ''.join([i for i in list(ALLOWED_LETTERS) if i.isalnum()])
+    except Exception as exc:
+        raise ConnectionError("Could not get HTTP request for letters") from exc
+else:
+    ALLOWED_LETTERS = input("Today's letters (center letter comes first): ")
 
-for i in enumerate(good_words):
-    print(i)
+if __name__ == "__main__":
+    for i, line in enumerate(lines):
+        NUM_ALLOWED_LETTERS = 0
+        for j, char in enumerate(line):
+            if char in ALLOWED_LETTERS:
+                NUM_ALLOWED_LETTERS += 1
+        if NUM_ALLOWED_LETTERS == len(line) and len(line) >= 4 and ALLOWED_LETTERS[0] in line:
+            good_words.append(line)
 
+    print(f"\nFound {len(good_words)} matches from {len(lines)} words ", end='')
+    print(f"using letters {list(ALLOWED_LETTERS)}.\n")
+
+    for i, word in enumerate(good_words):
+        print(f"{i}\t{word}")
