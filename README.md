@@ -1,5 +1,5 @@
 # Spelling-Bee-Solver
-A program that solves the New York Times Spelling Bee game found at https://www.nytimes.com/puzzles/spelling-bee.
+A program that solves the NYT Spelling Bee game found at https://www.nytimes.com/puzzles/spelling-bee.
 
 It automatically downloads today's letters and solves the game without using the list of correct answers found in the source of Spelling Bee's HTML. 
 
