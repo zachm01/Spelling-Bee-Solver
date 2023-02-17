@@ -7,7 +7,7 @@ AUTOMATICALLY_GET_LETTERS = True # set to "False" if you would not like the
                                  # letters to be downloaded automatically
 good_words = []
 
-# download list of words
+# download list of 58,111 possible words
 try:
     response = requests.get("http://www.mieliestronk.com/corncob_lowercase.txt")
     if response.status_code == 200:
