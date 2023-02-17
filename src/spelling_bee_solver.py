@@ -15,7 +15,7 @@ try:
 except Exception as exc:
     raise ConnectionError("Could not get HTTP request for words") from exc
 
-# download the allowed letters
+# download the 7 allowed letters
 if AUTOMATICALLY_GET_LETTERS:
     try:
         page = requests.get("https://www.nytimes.com/puzzles/spelling-bee")
