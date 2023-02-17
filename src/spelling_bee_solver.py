@@ -3,8 +3,8 @@
 import requests
 from bs4 import BeautifulSoup
 
-AUTOMATICALLY_GET_LETTERS = True # set to "True" if you would like the letters
-                                 # to be downloaded automatically
+AUTOMATICALLY_GET_LETTERS = True # set to "False" if you would not like the
+                                 # letters to be downloaded automatically
 good_words = []
 
 # download list of words
