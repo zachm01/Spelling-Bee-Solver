@@ -3,15 +3,16 @@
 import requests
 from bs4 import BeautifulSoup
 
-AUTOMATICALLY_GET_LETTERS = True # set to "False" if you would not like the
-                                 # letters to be downloaded automatically
+AUTOMATICALLY_GET_LETTERS = True # set to "True" if you would like the letters
+                                 # to be downloaded automatically
 good_words = []
 
-# download list of 58,111 possible words
+# download list of words
 try:
-    response = requests.get("http://www.mieliestronk.com/corncob_lowercase.txt")
+    # 466,000 words (split with '\n')
+    response = requests.get("https://raw.githubusercontent.com/dwyl/english-words/master/words.txt")
     if response.status_code == 200:
-        lines = response.text.split('\r\n')
+        lines = response.text.split('\n')
 except Exception as exc:
     raise ConnectionError("Could not get HTTP request for words") from exc
 
@@ -24,7 +25,7 @@ try:
 except Exception as exc:
     raise ConnectionError("Could not get HTTP request for common words") from exc
 
-# download the 7 allowed letters
+# download the allowed letters
 if AUTOMATICALLY_GET_LETTERS:
     try:
         page = requests.get("https://www.nytimes.com/puzzles/spelling-bee")
@@ -52,7 +53,9 @@ if __name__ == "__main__":
         if NUM_ALLOWED_LETTERS == len(line) and len(line) >= 4 and ALLOWED_LETTERS[0] in line:
             good_words.append(line)
 
-    print(f"\nFound {len(good_words)} matches from {len(lines)} words ", end='')
+    common_solutions = []
+
+    print(f"\nFound {len(good_words)} total solutions from {len(lines)} words ", end='')
     print(f"using letters {list(ALLOWED_LETTERS)}.\n")
 
     print("All solutions:\n")
@@ -73,4 +76,3 @@ if __name__ == "__main__":
         if is_pangram(word):
             out += "\033[3m\033[1m"
         print(out + f"{i}\t{word}\033[0m")
-
