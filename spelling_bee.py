@@ -55,5 +55,13 @@ if __name__ == "__main__":
     print(f"\nFound {len(good_words)} matches from {len(lines)} words ", end='')
     print(f"using letters {list(ALLOWED_LETTERS)}.\n")
 
+    print("All solutions:\n")
+
     for i, word in enumerate(good_words):
-        print(f"{i}\t{word}")
+        out = ""
+        if word in common_words:
+            out = "\033[3m"
+            common_solutions.append(word)
+        elif is_pangram(word):
+            out = "\033[3m\033[1m"
+        print(out + f"{i}\t{word}\033[0m")
