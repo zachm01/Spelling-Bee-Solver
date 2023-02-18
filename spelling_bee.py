@@ -39,6 +39,10 @@ if AUTOMATICALLY_GET_LETTERS:
 else:
     ALLOWED_LETTERS = input("Today's letters (center letter comes first): ")
 
+def is_pangram(word: str) -> bool:
+    """Check if a word is a pangram"""
+    return len(set(word)) == 7
+
 if __name__ == "__main__":
     for i, line in enumerate(lines):
         NUM_ALLOWED_LETTERS = 0
