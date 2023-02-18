@@ -15,6 +15,15 @@ try:
 except Exception as exc:
     raise ConnectionError("Could not get HTTP request for words") from exc
 
+try:
+    # 58,000 "common" words (split with '\r\n')
+    # Used to identify the most commonly occuring in English solutions
+    response = requests.get("http://www.mieliestronk.com/corncob_lowercase.txt")
+    if response.status_code == 200:
+        common_words = response.text.split('\r\n')
+except Exception as exc:
+    raise ConnectionError("Could not get HTTP request for common words") from exc
+
 # download the 7 allowed letters
 if AUTOMATICALLY_GET_LETTERS:
     try:
