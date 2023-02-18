@@ -65,3 +65,12 @@ if __name__ == "__main__":
         elif is_pangram(word):
             out = "\033[3m\033[1m"
         print(out + f"{i}\t{word}\033[0m")
+
+    print(f"\nFound {len(common_solutions)} common solutions:\n")
+
+    for i, word in enumerate(common_solutions):
+        out = ""
+        if is_pangram(word):
+            out += "\033[3m\033[1m"
+        print(out + f"{i}\t{word}\033[0m")
+
